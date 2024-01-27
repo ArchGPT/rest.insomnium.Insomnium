@@ -56,12 +56,12 @@ modules:
         sha256: 845a40171ca806d40f1fe34f790cfdc23252a723e6eb22df8d73904a89a7a171
 #        x-checker-data:
 #          type: json
-#          url: https://api.github.com/repos/Kong/insomnium/releases
+#          url: https://api.github.com/repos/ArchGPT/insomnium/releases
 #          version-query: map(select(.prerelease == false)) | map(select(.tag_name
 #            | startswith("core@"))) | first | .tag_name | sub("core@"; "")
 #          timestamp-query: map(select(.prerelease == false)) | map(select(.tag_name
 #            | startswith("core@"))) | first | .published_at
-#          url-query: '"https://github.com/Kong/insomnium/releases/download/core%40"
+#          url-query: '"https://github.com/ArchGPT/insomnium/releases/download/core%40"
 #            + $version + "/insomnium.Core-" + $version + ".AppImage"'
       - type: script
         dest-filename: insomnium.sh
