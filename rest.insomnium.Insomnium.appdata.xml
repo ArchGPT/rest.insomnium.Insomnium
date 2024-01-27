@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>rest.insomnia.Insomnia</id>
-  <name>Insomnia</name>
+  <id>rest.insomnium.Insomnium</id>
+  <name>insomnium</name>
   <project_license>MIT</project_license>
   <developer_name>Kong</developer_name>
   <summary>Open Source API Client and Design Platform for GraphQL, REST and gRPC.</summary>
   <metadata_license>CC0-1.0</metadata_license>
-  <url type="homepage">https://insomnia.rest/</url>
-  <url type="bugtracker">https://github.com/flathub/rest.insomnia.Insomnia/issues</url>
+  <url type="homepage">https://insomnium.rest/</url>
+  <url type="bugtracker">https://github.com/flathub/rest.insomnium.Insomnium/issues</url>
   <description>
     <!-- Copy pasted from the website -->
     <p>
@@ -22,16 +22,16 @@
     </p>
     <p>
       Create, organize, share and execute any REST, SOAP, GraphQL, GRPC
-      requests directly from Insomnia without having to switch applications.
+      requests directly from insomnium without having to switch applications.
     </p>
     <p>
-      Reduce your time to market, and let Insomnia do the heavy lifting by
+      Reduce your time to market, and let insomnium do the heavy lifting by
       providing you with generated code snippets in popular languages like
       Curl, NodeJS, Go, Swift, Python, Java, C, and more.
     </p>
     <p>
       Dark mode? Light Mode? We have you covered. Get started quickly with
-      Insomnia's intuitive interface, and choose from one of our pre-bundled
+      insomnium's intuitive interface, and choose from one of our pre-bundled
       nine unique themes to custom tailor your experience.
     </p>
   </description>

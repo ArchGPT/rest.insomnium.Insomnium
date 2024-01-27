@@ -1,0 +1,75 @@
+app-id: rest.insomnium.Insomnium
+runtime: org.freedesktop.Platform
+runtime-version: '22.08'
+sdk: org.freedesktop.Sdk
+base: org.electronjs.Electron2.BaseApp
+base-version: '22.08'
+separate-locales: false
+command: insomnium
+rename-icon: insomnium
+rename-desktop-file: insomnium.desktop
+finish-args:
+  - --socket=x11
+  - --socket=wayland
+  - --share=network
+  - --device=dri
+modules:
+  - name: unappimage
+    buildsystem: simple
+    build-commands:
+      - make -C squashfs-tools -j ${FLATPAK_BUILDER_N_JOBS} install INSTALL_DIR=/app/bin
+    sources:
+      - type: git
+        url: https://github.com/refi64/unappimage
+        commit: d7f86f2a0d7ec3a69211125207d5f127386b849a
+  - name: insomnium
+    buildsystem: simple
+    build-commands:
+      - unappimage insomnium.AppImage
+      - rm insomnium.AppImage
+
+      - install -Dm755 insomnium.sh /app/bin/insomnium
+      - install -dm755 /app/share/applications
+      - sed -e 's|Exec=AppRun|Exec=/app/bin/insomnium|' squashfs-root/insomnium.desktop
+        > /app/share/applications/insomnium.desktop
+      - install -Dm644 squashfs-root/usr/share/icons/hicolor/512x512/apps/insomnium.png
+        -t /app/share/icons/hicolor/512x512/apps
+      - install -Dm644 squashfs-root/usr/share/icons/hicolor/256x256/apps/insomnium.png
+        -t /app/share/icons/hicolor/256x256/apps
+#      - install -Dm644 squashfs-root/usr/share/icons/hicolor/128x128/apps/insomnium.png
+#        -t /app/share/icons/hicolor/128x128/apps
+#      - install -Dm644 squashfs-root/usr/share/icons/hicolor/64x64/apps/insomnium.png
+#        -t /app/share/icons/hicolor/64x64/apps
+#      - install -Dm644 squashfs-root/usr/share/icons/hicolor/32x32/apps/insomnium.png
+#        -t /app/share/icons/hicolor/32x32/apps
+#      - install -Dm644 squashfs-root/usr/share/icons/hicolor/16x16/apps/insomnium.png
+#        -t /app/share/icons/hicolor/16x16/apps
+
+      - install -Dm644 rest.insomnium.Insomnium.appdata.xml -t /app/share/metainfo/
+      - mv squashfs-root /app/main/
+    sources:
+      - type: file
+        dest-filename: insomnium.AppImage
+        only-arches:
+          - x86_64
+        url: https://github.com/ArchGPT/insomnium/releases/download/core%400.2.3-a/Insomnium.Core-0.2.3-a.AppImage
+        sha256: 845a40171ca806d40f1fe34f790cfdc23252a723e6eb22df8d73904a89a7a171
+#        x-checker-data:
+#          type: json
+#          url: https://api.github.com/repos/Kong/insomnium/releases
+#          version-query: map(select(.prerelease == false)) | map(select(.tag_name
+#            | startswith("core@"))) | first | .tag_name | sub("core@"; "")
+#          timestamp-query: map(select(.prerelease == false)) | map(select(.tag_name
+#            | startswith("core@"))) | first | .published_at
+#          url-query: '"https://github.com/Kong/insomnium/releases/download/core%40"
+#            + $version + "/insomnium.Core-" + $version + ".AppImage"'
+      - type: script
+        dest-filename: insomnium.sh
+        commands:
+          # Share a TMPDIR, so that multiple instance can figure out there's
+          # already one running.
+          - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
+          # This script is required to work around a lack of SUID sandbox helper:
+          - exec zypak-wrapper /app/main/insomnium "$@"
+      - type: file
+        path: rest.insomnium.Insomnium.appdata.xml
